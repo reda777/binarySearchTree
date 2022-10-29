@@ -15,32 +15,36 @@ class Tree{
     constructor(array){
         this.root=this.buildTree(sortDup(array));
     }
-    buildTree(arr){
-        let root;
-        if(arr.length<2){
+    buildTree(arr){//1234
+        let half,root;
+        let leftArr=[];
+        let rightArr=[];
+        if(arr.length==0){
             return null;
-        }else {
-            let half=(arr.length/2)>>0;
-            let leftArr=[];
-            let rightArr=[];
-            let leftI=0;
-            let rightI=0;
-            let mainI=0;
-            while(leftI<arr.length && rightI<arr.length-half){
-                if(leftI<half){
-                    leftArr[leftI++]=arr[mainI++];
-                }else{
-                    rightArr[rightI++]=arr[mainI++];
-                }
-            }
+        }else if(arr.length==1){
+            half=(arr.length/2)>>0;
             root=new Node(arr[half]);
-            /*console.log(root.data + " ");*/
+            return root;
+        }else{
+            let j=0;
+            half=(arr.length/2)>>0;
+            root=new Node(arr[half]);
+            //populating left array
+            for(let i=0;i<half;i++){
+                leftArr[i]=arr[i];
+            }
+            //populating right array
+            for(let i=half+1;i<arr.length;i++){
+                rightArr[j]=arr[i];
+                j+=1;
+            }
             root.left=this.buildTree(leftArr);
             root.right=this.buildTree(rightArr);
             return root;
         }
         
     }
+        
 }
 function prettyPrint(node, prefix = '', isLeft = true){
     if (node.right !== null) {
@@ -55,4 +59,5 @@ let array=[1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let array2=[1,3,4,6,7,8,10,13,14];
 console.log(sortDup(array2));
 let tree=new Tree(array2);
+console.log(tree.root);
 console.log(prettyPrint(tree.root));
