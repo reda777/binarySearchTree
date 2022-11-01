@@ -41,8 +41,60 @@ class Tree{
             root.left=this.buildTree(leftArr);
             root.right=this.buildTree(rightArr);
             return root;
-        }
+        } 
+    }
+    insert(node,value){
         
+        if(node==null){
+            return new Node(value);
+        }
+        if(value==node.data){
+            return null;
+        }
+        if(value<node.data){
+            node.left=this.insert(node.left,value);
+        }else{
+            node.right=this.insert(node.right,value);
+        }
+        return node;
+    }
+    delete(node,value){
+        if (node==null){
+            return null;
+        }
+        if(value<node.data){
+            node.left=this.delete(node.left,value);
+        }else if(value>node.data){
+            node.right=this.delete(node.right,value);
+        }else{
+            //no childs
+            if(node.left==null && node.right==null){
+                return null;
+            }else if(node.left!=null && node.right!=null){//two childs
+                let childL;
+                let temp;
+                temp=node.left;
+                while (temp.right != null) {
+                    temp = temp.right;
+                }
+                childL=temp;
+                node.data = predecessor.data;
+                node.left = this.delete(node.left, predecessor.data);
+            }else{// one child
+                node = (node.left != null) ? node.left: node.right;
+            }
+        }
+        return node;
+    }
+    find(node,value){
+        if(node==null || node.data==value){
+            return node;
+        }
+        if(value<node.data){
+            return this.find(node.left,value);
+        }else{
+            return this.find(node.right,value);
+        }
     }
         
 }
@@ -57,7 +109,8 @@ function prettyPrint(node, prefix = '', isLeft = true){
 }
 let array=[1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let array2=[1,3,4,6,7,8,10,13,14];
-console.log(sortDup(array2));
 let tree=new Tree(array2);
-console.log(tree.root);
 console.log(prettyPrint(tree.root));
+console.log(tree.find(tree.root,4));
+console.log(tree.find(tree.root,2));
+
